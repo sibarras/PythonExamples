@@ -20,7 +20,7 @@ class City:
     
     # Get the repr to the object
     def __repr__(self):
-        return f'(Name: {self.name};\tCoordinates: {self.x}, {self.y})'
+        return f'(Name: {self.name}; Coordinates: {self.x}, {self.y})'
 
 # panama = City(name='Panama', x=10, y=0)
 # chiriqui = City(name='Chiriqui', x=0, y=10)
@@ -245,7 +245,7 @@ def geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations):
     plt.xlabel('Generation')
     plt.title('Best Fitness vs Generation')
     plt.tight_layout()
-    plt.show()
+    plt.savefig('results0.png')
 
     
     
@@ -257,11 +257,11 @@ def geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations):
 
 cityList = []
 
-for i in range(0,5):
+for i in range(0,20):
     cityList.append(City(name = i, x=int(random.random() * 200), y=int(random.random() * 200)))
 
 
-best_route=geneticAlgorithm(population=cityList, popSize=30, eliteSize=20, mutationRate=0.01, generations=1)
+best_route=geneticAlgorithm(population=cityList, popSize=30, eliteSize=20, mutationRate=0.01, generations=300)
 x=[]
 y=[]
 for i in best_route:
@@ -280,4 +280,4 @@ for i in range(1,len(cityList)+1):
             size=8,
             bbox=bbox_props)
 plt.tight_layout()
-plt.show()
+plt.savefig('results.png')
