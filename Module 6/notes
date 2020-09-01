@@ -1,0 +1,832 @@
+This is an document for notes about the  module 6 of python course in
+net academy
+
+An object have 3 important parts:
+1. a Name
+2. individual properties
+3. abilities to perform specific activities
+
+a hint for define this:
+a noun - you probably define the object's name;
+an adjective - you probably define the object's property;
+a verb - you probably define the object's activity.
+
+Example:
+Max is a large cat who sleeps all day.
+Definition of this Object
+Object name = Max
+Home class = Cat
+Property = Size (large)
+Activity = Sleep (all day)
+
+the inheritance is the way that the objects have the properties, qualities and
+use that as a son have the attributes of his father.
+
+a class don't create an object. An object has to be created
+
+# class
+class TheSimplestClass:
+    pass
+
+# object
+myFirstObject = TheSimplestClass()
+
+==============================================================================
+==============================================================================
+
+STACKS
+
+is a way to store data in a simple way.
+an alternative name is LIFO. Last In First out.
+
+Push - Put a new element in the top of the stack
+Pop - get the last element in the top of the stack.
+
+To create a stack in python you have to create a list named stack.
+
+Then, you have to create a function named push(var) with an argument, that
+is where you will put the new value in the top of the stack.
+
+a function named get() that return the last value of the stack and delete
+that value
+----------Example-----------
+stack = []
+
+def push(val):
+    stack.append(val)
+
+
+def pop():
+    val = stack[-1]
+    del stack[-1]
+    return val
+
+push(3)
+push(2)
+push(1)
+
+print(pop())
+print(pop())
+print(pop())
+--------end example----------
+In this example, you see an procedural example
+It can be improved with exceptions. There, you can see some problems.
+
+1. The first is that anyone can modify this, and if somebody put stack[0]= num
+you will have an disorganized stack
+
+2. Possibly you need in the future other stack and you will need create new
+push and pop functions and new lists.
+
+3. maybe you need other functions for every stacks, with a dozen of stacks. It
+will be a problem and a lot of work.
+
+There are the solutions for the mentioned problems.
+
+1. the ability to hide (protect) selected values against unauthorized access
+is called encapsulation; the encapsulated values can be neither accessed nor
+modified if you want to use them exclusively
+
+2. when you have a class implementing all the needed stack behaviors, you can
+produce as many stacks as you want; you needn't copy or replicate any part of
+the code
+
+3. the ability to enrich the stack with new functions comes from inheritance;
+you can create a new class (a subclass) which inherits all the existing traits
+from the superclass, and adds some new ones.
+
+============= creating a stack with POO ==============
+
+You first need to create a class named Stack
+>>> class Stack:
+
+then, you have to install a list inside the class. This list can't be shared
+with other list. Also, this list has to be hidden for the users
+For that, you have to equip the class with a specific function.
+1. it has to be named in a strict way
+2. it is invoked implicitly, when the new object is created.
+
+The function that we need is called constructor, as its general purpose is to
+construct a new object. The constructor should know everything about the
+object's structure, and must perform all the needed initializations.
+------------Example-------------
+class Stack: #class
+    def __init__(self): #constructor with self parameter (represents the object)
+        print("Hi!")
+
+stackObject = Stack() #object
+----------endExample--------------
+
+there are some explanation of the class created:
+
+1. the constructor name is always __init__
+2. it has to have at least one parameter. The parameter represent the new
+created object. You can use the parameters to manipulate the object, and to
+enrich it with the needed properties
+3. the obligatory parameter is usually called self. Is only a convention but
+you should follow it. It simplifies the reading and understanding in your code.
+
+Note - there is no trace of invoking the constructor inside the code.
+It has been invoked implicitly and automatically.
+
+Every change that you made inside the constructor that modifies the self
+parameter, will change also the object in the future.
+This changes in the self parameter are called properties, and this will remain
+in the objects.
+
+we will ad a property called stackList
+to access that property, you need a dot after the object, and write the
+property's name. You don't need to write this -> (). You don't want to invoke
+a method, you want to access a property.
+After you create the property, the object get this property and is ready to
+use this value.
+
+-------Example--------------------
+class Stack:
+    def __init__(self):
+        self.stackList = []
+
+stackObject = Stack()
+print(len(stackObject.stackList))
+---------endExample----------------
+
+To hide stackList for the users and the rest of the world, we need to change
+the property name with two underscores in the beginning. Then, this Property
+can only be used and modified by the class. Run the next program to prove it.
+
+-----------Example-----------------
+class Stack:
+    def __init__(self):
+        self.__stackList = []
+
+stackObject = Stack()
+print(len(stackObject.__stackList))
+-----------endExample---------------
+We will go to other chapter now.
+
+===========================Instance Variables==================================
+
+Such an approach has some important consequences:
+
+1. different objects of the same class may possess different sets
+ of properties;
+2. there must be a way to safely check if a specific object owns the property you
+ want to utilize (unless you want to provoke an exception - it's always worth
+ considering)
+3. each object carries its own set of properties - they don't interfere with one
+ another in any way.
+Such variables (properties) are called instance variables.
+
+The word instance suggests that they are closely connected to the objects (which
+are class instances), not to the classes themselves. Let's take a closer look at
+them.
+
+this example show how objects from the same class have different properties.
+------------example------------
+class ExampleClass:
+    def __init__(self, val = 1):
+        self.first = val
+
+    def setSecond(self, val):
+        self.second = val
+
+
+exampleObject1 = ExampleClass()
+exampleObject2 = ExampleClass(2)
+
+exampleObject2.setSecond(3)
+
+exampleObject3 = ExampleClass(4)
+exampleObject3.third = 5
+
+
+print(exampleObject1.__dict__)
+print(exampleObject2.__dict__)
+print(exampleObject3.__dict__)
+---------endExample-------------
+
+__dict__ is a dictionary with the names and valuse of all the properties the
+object is currently carrying.
+
+from the example, we can say:
+1. The class named ExampleClass has a constructor that unconditionally creates
+an instance variable named first, and sets it with the value passed through the
+first argument
+2. the class has a method which creates a nother instance variable named second
+3. we've created three objects, but all the instances differ:
+    1. exampleObject1 only has the property named first
+    2. exampleObject2 has two properties: first and second
+    3. exampleObject3 has been enriched with a property named third just on the
+    fly, outside the class code. This is possible and fully permisible.
+
+There is one additional conclusion that should be stated here: modifying an
+instance variable of any object has no impact on all the remaining objects.
+Instance variables are perfectly isolated from each other.
+
+If we put this properties in a private form with two underscores in front, you
+will se the output a bit different.
+
+{'_ExampleClass__first': 1}
+{'_ExampleClass__first': 2, '_ExampleClass__second': 3}
+{'_ExampleClass__first': 4, '__third': 5}
+
+When Python sees that you want to add an instance variable to an object and
+you're going to do it inside any of the object's methods, it mangles the
+operation in the following way:
+
+1. it puts a class name before your name;
+2. it puts an additional underscore at the beginning.
+
+The name is now fully accessible from outside the class. You can run a code like
+this: print(exampleObject1._ExampleClass__first)
+
+The mangling won't work if you add an instance variable outside the class code.
+In this case, it'll behave like any other ordinary property.
+
+
+a class variable is a property which exist in just one copy and is stored outside
+any object.
+a class variable exists in one copy even if there are no objects in the class.
+
+In the example, we declare a variable 'counter' outside the methods but inside the
+class. You se the nname of the class with the variable like ExampleClass.counter to
+use this variable inside the constructor.
+
+1. there is an assignment in the first list of the class definition - it sets the
+ variable named counter to 0; initializing the variable inside the class but outside
+ any of its methods makes the variable a class variable;
+2. accessing such a variable looks the same as accessing any instance attribute - you
+ can see it in the constructor body; as you can see, the constructor increments the
+ variable by one; in effect, the variable counts all the created objects.
+ Running the code will cause the following output:
+
+{'_ExampleClass__first': 1} 3
+{'_ExampleClass__first': 2} 3
+{'_ExampleClass__first': 4} 3
+
+Two important conclusions come from the example:
+
+1. class variables aren't shown in an object's __dict__ (this is natural as class
+ variables aren't parts of an object) but you can always try to look into the variable
+ of the same name, but at the class level - we'll show you this very soon;
+2. a class variable always presents the same value in all class instances (objects)
+
+Class variables exists even when no class instance (object) had been created.
+We will present the diference between these two __dict__ variables. the one for
+the class and the other for the object.
+
+----------Example---------------
+class ExampleClass:
+    varia = 1
+    def __init__(self, val):
+        ExampleClass.varia = val
+
+print(ExampleClass.__dict__)
+exampleObject = ExampleClass(2)
+
+print(ExampleClass.__dict__)
+print(exampleObject.__dict__)
+--------endExample----------------
+
+1. we defined a class named ExampleClass
+2. The class defines a class variable named varia
+3. The class constructor sets the variable with the parameter's value
+4. Naming the variable is the most important aspect of the example bacause:
+  1. Changing the assignament to change.varia = val would create an instance
+    variable of the same as the class's one
+  2. Changing the assignament to varia.val would operate on a method's local
+    variable: (we strongly encourage you to test both of the above cases - this
+    will make it easier for you to remember the difference)
+5. The first line of class code prints the value of the ExampleClass.varia
+  attribute: Note - we use the value before the very first object of the class
+  is instantiated.
+
+Attributes existence
+
+Python's attitude to object instantiation raises one important issue - in
+contrast to other programming languages, you may not expect that all objects of
+the same class have the same sets of properties.
+------Example--------
+class ExampleClass:
+    def __init__(self, val):
+        if val % 2 != 0:
+            self.a = 1
+        else:
+            self.b = 1
+
+exampleObject = ExampleClass(1)
+
+print(exampleObject.a)
+print(exampleObject.b)
+
+----endExample-----------
+As you can see, accessing a non-existing object (class) attribute causes an
+AttributeError exception.
+
+Try exception--
+------Example--------
+class ExampleClass:
+    def __init__(self, val):
+        if val % 2 != 0:
+            self.a = 1
+        else:
+            self.b = 1
+
+exampleObject = ExampleClass(1)
+print(exampleObject.a)
+
+try:
+    print(exampleObject.b)
+except AttributeError:
+    pass
+----endExample-----------
+As you can see, this action isn't very sophisticated. Essentially, we've just
+swept the issue under the carpet.
+Fortunately, there is one more way to cope with the issue.
+
+Python provides a function which is able to safely check if any object/class
+contains a specified property. The function is named hasattr, and expects two
+arguments to be passed to it:
+
+1. the class or the object being checked;
+2. the name of the property whose existence has to be reported (note: it has to
+  be a string containing the attribute name, not the name alone)
+
+The function returns True or False.
+This is how you can utilize it:
+
+---------Example------------------
+class ExampleClass:
+    def __init__(self, val):
+        if val % 2 != 0:
+            self.a = 1
+        else:
+            self.b = 1
+
+exampleObject = ExampleClass(1)
+print(exampleObject.a)
+
+if hasattr(exampleObject, 'b'):
+    print(exampleObject.b)
+----------endExample----------------
+
+Don't forget that the hasattr() function can operate on classes, too. You can
+use it to find out if a class variable is available, just like here in the
+example in the editor.
+---------Example-------------
+class ExampleClass:
+    attr = 1
+
+print(hasattr(ExampleClass, 'attr'))
+print(hasattr(ExampleClass, 'prop'))
+--------endExample-----------------
+
+And one more example
+
+--------------Example------------------
+class ExampleClass:
+    a = 1
+    def __init__(self):
+        self.b = 2
+
+exampleObject = ExampleClass()
+
+print(hasattr(exampleObject, 'b'))
+print(hasattr(exampleObject, 'a'))
+print(hasattr(ExampleClass, 'b'))
+print(hasattr(ExampleClass, 'a'))
+-----------endExample-----------------
+The output is:
+True
+True
+False
+True
+
+--------------------------METHODS-------------------------------------------
+
+A method is a function embedded inside a class.
+A method is obligued to have at least one parameter.
+The first parameter is always self. This identifies the object for which method
+is invoked.
+--------------Example------------------
+class Classy:
+    def method(self):
+        print("method")
+
+obj = Classy()
+obj.method()
+-----------endExample-----------------
+
+Note the way we've created the object - we've treated the class name like a
+function, returning a newly instantiated object of the class.
+
+the self parameter obtains access to the obaject instance and class variables.
+--------------------------------------
+class Classy:
+    varia = 2
+    def method(self):
+        print(self.varia, self.var)
+
+obj = Classy()
+obj.var = 3
+obj.method()
+-------------------------------------
+
+is also used to invoke other object/class  methods from inside the class
+----------------------------
+class Classy:
+    def other(self):
+        print("other")
+
+    def method(self):
+        print("method")
+        self.other()
+
+obj = Classy()
+obj.method()
+----------------------------
+
+If you name a method like this: __init__, it won't be a regular method - it
+will be a constructor.
+
+The constructor:
+1. is obliged to have the self parameter (it's set automatically, as usual);
+2. may (but doesn't need to) have more parameters than just self; if this
+happens, the way in which the class name is used to create the object must
+reflect the __init__ definition;
+3. can be used to set up the object, i.e., properly initialize its internal
+state, create instance variables, instantiate any other objects if their
+existence is needed, etc.
+-----------------------------
+class Classy:
+    def __init__(self, value):
+        self.var = value
+
+obj1 = Classy("object")
+
+print(obj1.var)
+-----------------------------
+Note that the constructor:
+1. Cannot return a value, as it is designed to return a newly created object and
+nothing else;
+2. cannot be invoked directly either from the object or from inside the class
+(you can invoke a constructor from any of the object's superclasses, but we'll
+discuss this issue later.)
+
+Everything we've said about property name mangling applies to method names,
+too - a method whose name starts with __ is (partially) hidden.
+----------------------------
+class Classy:
+    def visible(self):
+        print("visible")
+
+    def __hidden(self):
+        print("hidden")
+
+obj = Classy()
+obj.visible()
+
+try:
+    obj.__hidden()
+except:
+    print("failed")
+
+obj._Classy__hidden()
+----------------------------
+outputs:
+visible
+failed
+hidden
+---------
+
+Each Python class and each Python object is pre-equipped with a set of useful
+attributes which can be used to examine its capabilities.
+You already know one of these - it's the __dict__ property.
+
+__dict__ is a dictionary. Another built-in property worth mentioning is
+__name__, which is a string. Name only exists inside the classes.
+
+If you want to find the class of a particular object, you can use a function
+named type(), which is able (among other things) to find a class which has been
+used to instantiate any object.
+-----------------------------
+class Classy:
+    pass
+
+print(Classy.__name__)
+obj = Classy()
+print(type(obj).__name__)
+-----------------------------
+
+__module__ is a string, too - it stores the name of the module which contains
+the definition of the class.
+-----------------------------
+class Classy:
+    pass
+
+print(Classy.__module__)
+obj = Classy()
+print(obj.__module__)
+-----------------------------
+
+__bases__ is a tuple. The tuple contains classes (not class names) which are
+direct superclasses for the class.
+The order is the same as that used inside the class definition.
+
+Note: only classes have this attribute - objects don't.
+The function named printbases(), presents the tuple's contents clearly.
+---------------------------------
+class SuperOne:
+    pass
+
+class SuperTwo:
+    pass
+
+class Sub(SuperOne, SuperTwo):
+    pass
+
+
+def printBases(cls):
+    print('( ', end='')
+
+    for x in cls.__bases__:
+        print(x.__name__, end=' ')
+    print(')')
+
+
+printBases(SuperOne)
+printBases(SuperTwo)
+printBases(Sub)
+---------------------------------
+
+1. introspection, which is the ability of a program to examine the type or
+properties of an object at runtime;
+
+2. reflection, which goes a step further, and is the ability of a program to
+manipulate the values, properties and/or functions of an object at runtime.
+
+In other words, you don't have to know a complete class/object definition to
+manipulate the object, as the object and/or its class contain the metadata
+allowing you to recognize its features during program execution.
+
+-----Instrospection and reflection----
+Allows programmer to do everything with every object. No matter where it comes
+from
+
+incIntsI() gets an object of any class. Scans its contents in order to find all
+integers attributes with names starting with i. and increments them by one.
+
+use getattr() builtin function to get its current value; note: getattr() takes
+two args: an object, and its property name (as a string), and returns the
+current attribute's value;
+
+isinstance() bultin function checks for type of instances in a attribute.
+
+setattr() function; the function takes three arguments: an object, the property
+name (as a string), and the property's new value.
+
+
+======================== INHERITANCE ==========================================
+
+<__main__.Star object at 0x02D98298>
+is the way that a class introduces itself. Not confortable.
+
+you can use the __str__ method to have a better output.
+----------------------------------------------
+def __str__(self):
+    return self.name + ' in ' + self.galaxy
+----------------------------------------------
+output: Sun in Milky Way
+then you have a better output in the print function.
+
+inheritance is a way of building a new class, not from scratch, but by using an
+already defined repertoire of traits. The new class inherits (and this is the
+key) all the already existing equipment, but is able to add some new ones if
+needed.
+
+issubclass(ClassOne, ClassTwo) detects the relation between classes.
+ClassOne has to be subclass of ClassTwo.
+you can do a nested loop with three inheritance classes to see that
+
+There is one important observation to make: each class is considered to be a
+subclass of itself.
+--
+The is operator
+example:
+>>> objectOne is objectTwo
+this chekcs if these objects refer to the same object.
+
+variables don't store the objects themselves, but only the handles pointing to
+the internal Python memory.
+The key is that is operator checks if two variables refers to the same. When
+you copy a variable, you use the same position in memory to both, so this Two
+variables refers to the same.
+----
+To inherit properties you need to call the __init__ constructor in the subclass
+constructor. like superclass.__init__(self, val)
+This can inherits the __str__ method although this isn't in the new subclass.
+
+A better way yo activate the superclass properties and methods is using the
+function named super(). this replace the name of the superclass and you dont
+need to know it. Also, you dont need to put the self parameter as argument.
+You have to write: super().__init__(var)
+----
+class variables in Inheritance
+You can access variables in a superclass and subclass in the subclass with any
+problem. without the init function in any of these two classes.
+
+instance Variables in Inheritance
+With a instance variables, you need to invoke the __ini__ constructor of the
+superclass object. This is needed because the instance variables are declared
+inside the __init__ constructor in every class.
+---
+When you try to access any object's entity, Python will try to (in this order):
+1. find it inside the object itself
+2. find it in all classes involved in the object's inheritance line from
+  bottom to top
+If both of the above fail, an exception (AttributeError) is raised.
+
+double inheritance is like class sub(super1, super2):
+is exactly like the last example but with the two parents.
+
+Both, Level1 and Level2 classes define a method named fun() and a property
+named var. Does this mean that the Level3 class object will be able to access
+two copies of each entity? Not at all.
+
+The entity defined later (in the inheritance sense) overrides the same entity
+defined earlier.
+Python looks for an entity from bottom to top, and is fully satisfied with the
+first entity of the desired name.
+--- inhertitance3.py
+When you have a class that inherits from two superclasses, then you have to
+see what class is in the left position and this properties will have a
+preference in case that you have equal methods and properties or variables in
+the parents class.
+
+We can say that Python looks for object components in the following order:
+1. inside the object itself;
+2. in its superclasses, from bottom to top;
+3. if there is more than one class on a particular inheritance path, Python
+  scans them from left to right.
+
+---- How to build an hierarchy of classes ---
+-------------------------------------
+class One:
+    def doit(self):
+        print("doit from One")
+
+    def doanything(self):
+        self.doit()
+
+class Two(One):
+    def doit(self):
+        print("doit from Two")
+
+one = One()
+two = Two()
+
+one.doanything()
+two.doanything()
+------------------------------------
+
+How to know what doit method will be used by the doanything method?
+
+It's simple, too if you keep in mind how Python finds class components. The
+second invocation will launch doit() in the form existing inside the Two class,
+regardless of the fact that the invocation takes place within the One class.
+
+This is called polymorphism. The fact that the subclass affects the superclass
+behavior.
+In other words, no class is given once and for all. Each class's behavior may
+be modified at any time by any of its subclasses.
+
+---inheritance4.py----
+# Example1
+
+1. we defined a superclass named Vehicle, which uses the turn() method to
+implement a general scheme of turning, while the turning itself is done by a
+method named changedirection(); note: the former method is empty, as we are
+going to put all the details into the subclass (such a method is often called
+an abstract method, as it only demonstrates some possibility which will be
+instantiated later)
+
+2. we defined a subclass named TrackedVehicle (note: it's derived from the
+Vehicle class) which instantiated the changedirection() method by using the
+specific (concrete) method named controltrack()
+
+3. respectively, the subclass named WheeledVehicle does the same trick, but
+uses the turnfrontwheel() method to force the vehicle to turn.
+
+The most important advantage (omitting readability issues) is that this form of
+code enables you to implement a brand new turning algorithm just by modifying
+the turn() method, which can be done in just one place, as all the vehicles
+will obey it.
+
+#Example2
+1. inheritance extends a class's capabilities by adding new components and
+  modifying existing ones; in other words, the complete recipe is contained
+  inside the class itself and all its ancestors; the object takes all the
+  class's belongings and makes use of them;
+2. composition projects a class as a container able to store and use other
+  objects (derived from other classes) where each of the objects implements a
+  part of a desired class's behavior.
+
+------- Diamonds in inheritance are a big mistake --------------
+
+  Diamonds and why you don't want them
+
+  The spectrum of issues possibly coming from multiple inheritance is
+  illustrated by a classical problem named the diamond problem. The name
+  reflects the shape of the inheritance diagram - take a look at the picture.
+
+  1. there is the top-most superclass named A;
+  2. there are two subclasses derived from A - B and C;
+  3. and there is also the bottom-most subclass named D, derived from B and C
+    (or C and B, as these two variants mean different things in Python)
+
+Python, however, doesn't like diamonds, and won't let you implement anything
+like this. If you try to build a hierarchy like this one:
+------------------------
+class A:
+    pass
+
+class B(A):
+    pass
+
+class C(A):
+    pass
+
+class D(A, B):
+    pass
+
+d = D()
+------------------------
+you will get a TypeError exception, along with the following message:
+      Cannot create a consistent method resolution
+      order (MRO) for bases B, A
+
+====================== EXCEPTIONS AGAIN ==============================PART 6
+
+The first feature we want discuss here is an additional, possible branch that
+can be placed inside (or rather, directly behind) the try-except block - it's
+the part of the code starting with else
+
+Note: the else: branch has to be located after the last except branch.
+---------------------------
+def reciprocal(n):
+    try:
+        n = 1 / n
+    except ZeroDivisionError:
+        print("Division failed")
+        return None
+    else:
+        print("Everything went fine")
+        return n
+
+print(reciprocal(2))
+print(reciprocal(0))
+-----------------------------
+
+The try-except block can be extended in one more way - by adding a part headed
+by the 'finally' keyword (it must be the last branch of the code designed to
+handle exceptions).
+
+Note: these two variants (else and finally) aren't dependent in any way, and
+they can coexist or occur independently.
+
+The finally block is always executed
+
+------------------------------
+def reciprocal(n):
+    try:
+        n = 1 / n
+    except ZeroDivisionError:
+        print("Division failed")
+        n = None
+    else:
+        print("Everything went fine")
+    finally:
+        print("It's time to say goodbye")
+        return n
+
+print(reciprocal(2))
+print(reciprocal(0))
+------------------------------
+
+                  Exceptions Are Classes
+
+As you can see, the except statement is extended, and contains an additional
+phrase starting with the as keyword, followed by an identifier. The identifier
+is designed to catch the exception object so you can analyze its nature and
+draw proper conclusions.
+
+The example presents a very simple way of utilizing the received object - just
+print it out (as you can see, the output is produced by the object's __str__()
+method) and it contains a brief message describing the reason.
+----------------------
+try:
+    i = int("Hello!")
+except Exception as e:
+    print(e)
+    print(e.__str__())
+-----------------------
