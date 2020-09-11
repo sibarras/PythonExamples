@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from random import random
 
+from data import features, targets, features_test, target_test
+
 class NeuralNetwork:
     def __init__(self):
         # Error Register
@@ -14,8 +16,8 @@ class NeuralNetwork:
     def __repr__(self):
         if self.trained == False:
             return 'No trained network'
-        return 'Neural Network:\n(Weights: {},\nBias: {},\nTrain: {})\n'\
-                .format(list(self.weights.reshape(len(self.weights))), float(self.bias), self.trained)
+        return 'Neural Network:\n(Weights: {},\nBias: {}, Train: {}, Error: {})\n'\
+                .format(list(self.weights.reshape(len(self.weights))), float(self.bias), self.trained, float(self.totError))
 
     @staticmethod
     def __sigmoid(x):
@@ -24,7 +26,7 @@ class NeuralNetwork:
     def __sigmoid_dx(self, x):
         return self.__sigmoid(x) * (1-self.__sigmoid(x))
 
-    def train(self, inputs:list, targets:list, iterations=10000, learning_rate=0.05, errorRange=0.001):
+    def train(self, inputs:list, targets:list, iterations=100000, learning_rate=0.05, errorRange=0.001):
         # Data for training
         self.inputs = np.array(list(inputs))
         self.samples, self.dendrites = self.inputs.shape
@@ -43,7 +45,7 @@ class NeuralNetwork:
             self.bias = random()
             self.totError = 0
             
-        while i in range(iterations) or self.totError < errorRange:
+        while i in range(iterations) or self.totError > errorRange:
             # prediction
             prediction_in = self.inputs @ self.weights + self.bias
             prediction_out = self.__sigmoid(prediction_in)
@@ -51,7 +53,7 @@ class NeuralNetwork:
             # Error
             error = prediction_out - self.targets
             self.totError = error.sum()
-            self.errorTrack.append(self.totError)
+            self.errorTrack.append(float(self.totError))
             
             # Calculate derivatives
             dprediction_dz = self.__sigmoid_dx(prediction_out)
@@ -94,29 +96,19 @@ class NeuralNetwork:
         assert self.trained and len(inputs) == self.dendrites
         inputs = np.array(inputs)
         prediction_in = inputs @ self.weights + self.bias
-        return 'Is True in {}%'.format(round(float(self.__sigmoid(prediction_in))*100, 2))
+        y = float(self.__sigmoid(prediction_in))
+        if y > 0.5:
+            return 'Is True in {}%'.format(round(y*100, 2))
+        else:
+            return 'Is False in {}%'.format(round((1-y)*100, 2))
 
-dataDict = {
-    'Sample': [1,2,3,4,5,6,7,8],
-    'Loss of Smell': [1,1,0,0,1,0,0,0],
-    'Weight Loss': [0,0,0,1,1,0,0,0],
-    'Runny Nose': [0,0,1,0,0,1,0,1],
-    'Body Pain': [1,0,1,0,0,1,1,0],
-    'Result': [1,1,0,0,1,1,0,0]
-}
-
-df = pd.DataFrame(dataDict)
-print(df)
-inputs = np.array(list(dataDict.values())[1:-1]).T
-targets = list(dataDict.values()).pop()
 
 # Neural Network Train
 nn1 = NeuralNetwork()
-nn1.train(inputs, targets)
+nn1.train(features, targets)
 nn1.saveTrain()
 
 # Network Prediction
 print(nn1)
-print(nn1.predict([1,0,0,1]))
-print(nn1.predict([0,0,1,0]))
-print(nn1.predict([1,0,1,0]))
+for test in features_test:
+    print(nn1.predict(test))

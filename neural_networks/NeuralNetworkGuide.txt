@@ -1,0 +1,12 @@
+Cambio por tiempo de vida de un Transformador
+
+Analisis de Aceite
+Prueba de Factor de Potencia
+Prueba de Resistencia de Devanados
+Prueba de Aislamiento de Bushings
+Prueba de Relacion de Transformacion
+Prueba de BLoqueos y alarmas
+Prueba de Corriente de Excitacion
+Prueba SFRA
+Prueba de Resistencia de Devanado
+pruebas de Capacitancia en Bushings
