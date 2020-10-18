@@ -27,9 +27,9 @@ def solve(main:Ecuation, slacks:list):
 
     def basicSolution(main=main, slacks=slacks):
         # Solucion de x1, x2, x3, ..., xn son todas ceros
-        solution = np.zeros(main.dimensions)
+        # solution = np.zeros(main.dimensions)
         # Las restricciones las colocamos en cero y evaluaremos el maximo de cada una
-        yres = np.array([slack.constant for slack in slacks])
+        # yres = np.array([slack.constant for slack in slacks])
 
         limits = []  # Limites de cada variable
         for variable in range(main.dimensions):
