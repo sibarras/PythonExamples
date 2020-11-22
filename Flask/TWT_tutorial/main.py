@@ -23,10 +23,16 @@ class Users(db.Model):
         self.name = name
         self.email = email
 
+# Para eliminar datos de una base de datos
+# Users.query.filter_by(name=user).first()
 
 @app.route("/")
 def home():
     return render_template("index.html")
+
+@app.route('/view')
+def view():
+    return render_template("view.html", values=Users.query.all())
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -34,8 +40,18 @@ def login():
         session.permanent = True
         user = request.form["nm"]
         session["user"] = user
+
+        found_user = Users.query.filter_by(name=user).first()
+        if found_user:
+            session['email'] = found_user.email
+        else:
+            usr = Users(name=user, email="")
+            db.session.add(usr)
+            db.session.commit()
+
         flash("Login Succesful!")
         return redirect(url_for("user"))
+
     elif "user" in session:
         flash("Already logged in!")
         return redirect(url_for("user"))
@@ -51,6 +67,9 @@ def user():
         if request.method == 'POST':
             email = request.form['email']
             session['email'] = email
+            found_user = Users.query.filter_by(name=user).first()
+            found_user.email = email
+            db.session.commit()
             flash("Email was saved!")
         else:
             if 'email' in session:
