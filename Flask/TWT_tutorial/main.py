@@ -6,15 +6,9 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
-@app.route("/<name>")  # Toma lo que te llega y lo guarda en la variable name
-def user(name):
-    return render_template("user.html", nameList=['tim','sam', 'joe', 'bryan'])
-
-@app.route('/admin')
-def admin():
-    return redirect(url_for("user", name='Admin!'))
-
-
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
