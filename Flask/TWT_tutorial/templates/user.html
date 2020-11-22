@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Page</title>
+</head>
+<body>
+    <p>There are the names in the list:</p>
+    {% for name in nameList %}
+        <p>{{name}}</p>
+        {% if name == "sam" %}
+            <p>This is me!!</p>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>
