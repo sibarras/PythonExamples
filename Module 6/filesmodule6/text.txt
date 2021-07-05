@@ -1,4 +1,4 @@
 You may have a complex text with a lot of new words to use. 
 
 it may have numbers like 2,3,4,5 and other things like @ and ().
-Sheck it.
+Check it.

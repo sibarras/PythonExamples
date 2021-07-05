@@ -1,7 +1,8 @@
 from os import strerror
+from pathlib import Path
 
 filename = input('File name (with extension): ')  # text.txt is the file.
-PATH = '/Users/Samuel/Documents/python/filesmodule6/'
+PATH = Path(__file__).parent.__str__()+'/'
 print()
 
 # read the file
@@ -28,7 +29,7 @@ for lettr, frec in sortedHist:
     print(lettr,' -> ', frec)
 
 try:
-    newFile = open(PATH+filename+'.hist', 'wt')
+    newFile = open(PATH+filename.replace('.txt','.hist'), 'wt')
     for lttr, frec in sortedHist:
         newFile.writelines(lttr+' -> '+str(frec)+'\n')
     newFile.close()
@@ -36,3 +37,4 @@ try:
 except Exception as e:
     print('Cannot create the file '+filename+'.hist')
     print (e.__str__())
+    exit(e.errno)

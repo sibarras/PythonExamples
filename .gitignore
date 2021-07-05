@@ -1,4 +1,6 @@
 .vscode/
 venv/
+PythonExamples/Flask/TWT_tutorial/env/
+env/
 secret*
 __pycache__

@@ -21,13 +21,15 @@ class SuperTwo:
 class Sub(SuperOne, SuperTwo):
     pass
 
-
+# Imprimir todas las bases del sistema que se necesita 
 def printBases(cls):
     print('( ', end='')
 
     for x in cls.__bases__:
         print(x.__name__, end=' ')
     print(')')
+
+printBases(Sub)
 
 
 class MyClass:

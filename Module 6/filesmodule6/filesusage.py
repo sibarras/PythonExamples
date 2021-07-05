@@ -1,14 +1,17 @@
 from os import strerror
+import pathlib
 
-srcname = input("Source file name?: ")
+# Archivo para copiar documentos de bytes
+srcname = input("Source file name? (With Extension): ")
+path = pathlib.Path(__file__).parent.__str__()+'/'
 try:
-    src = open(srcname, 'rb')
+    src = open(path + srcname, 'rb')
 except IOError as e:
     print("Cannot open source file: ", strerror(e.errno))
     exit(e.errno)	
 dstname = input("Destination file name?: ")
 try:
-    dst = open(dstname, 'wb')
+    dst = open(path+dstname, 'wb')
 except Exception as e:
     print("Cannot create destination file: ", strerror(e.errno))
     src.close()
@@ -16,6 +19,7 @@ except Exception as e:
 
 buffer = bytearray(65536)
 total  = 0
+
 try:
     readin = src.readinto(buffer)
     while readin > 0:

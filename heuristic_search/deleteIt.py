@@ -9,3 +9,18 @@ while 1 not in lst:
     print(lst)
     lst.append(1)
 print('ready')
+
+class A:
+    def a(self):
+        print('a')
+
+class B:
+    def b(self):
+        print('b')
+
+class C(A, B):
+    def c(self):
+        self.a()
+
+c = C()
+c.c()
